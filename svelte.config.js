@@ -1,4 +1,4 @@
-import adapter from '@sveltejs/adapter-auto';
+import adapter from '@sveltejs/adapter-static';
 import preprocess from 'svelte-preprocess';
 import WindiCSS from 'vite-plugin-windicss';
 import path from 'path';
@@ -10,7 +10,11 @@ const config = {
 	preprocess: preprocess(),
 
 	kit: {
-		adapter: adapter(),
+		adapter: adapter({
+			pages: 'build',
+			assets: 'build',
+			fallback: 'index.html'
+		}),
 
 		// hydrate the <div id="svelte"> element in src/app.html
 		target: '#svelte',
@@ -21,7 +25,10 @@ const config = {
 					$modules: path.resolve('./src/modules')
 				}
 			},
-			plugins: [WindiCSS()]
+			plugins: [WindiCSS()],
+			ssr: {
+				external: ['firebase']
+			}
 		}
 	}
 };
