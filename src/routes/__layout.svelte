@@ -10,12 +10,14 @@
 			const userData = userDoc.data();
 			user.set({
 				uid: firebaseUser.uid,
-				name: userData.name
+				name: userData.name,
+				loaded: true
 			});
 		} else {
 			user.set({
 				uid: '',
-				name: ''
+				name: '',
+				loaded: true
 			});
 		}
 	});
