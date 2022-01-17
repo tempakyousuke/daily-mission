@@ -14,7 +14,8 @@
 	let values = {
 		title: '',
 		detail: '',
-		point: ''
+		point: '',
+		type: 'dayly'
 	};
 
 	let errors = {
@@ -26,6 +27,11 @@
 	user.subscribe((user) => {
 		uid = user.uid;
 	});
+
+	const typeOptions = [
+		{ label: 'デイリー', value: 'dayly' },
+		{ label: 'ウィークリー', value: 'weekly' }
+	];
 
 	const schema = yup.object().shape({
 		title: yup.string().required('ミッション名は必須です'),
@@ -94,6 +100,7 @@
 				error={errors.point}
 				on:input={() => validate('point')}
 			/>
+			<Select bind:value={values.type} options={typeOptions} className="mt-5" />
 			<Button block className="mt-5" on:click={submit}>登録</Button>
 		</form>
 	</div>
