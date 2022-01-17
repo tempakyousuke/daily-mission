@@ -32,6 +32,7 @@
   "type": "module",
   "dependencies": {
     "firebase": "^9.6.3",
-    "svelte-toast": "^1.0.0"
+    "svelte-toast": "^1.0.0",
+    "yup": "^0.32.11"
   }
 }
