@@ -24,7 +24,6 @@
 
 	const schema = yup.object().shape({
 		name: yup.string().required('名前は必須です'),
-		identifier: yup.string().required('識別子は必須です'),
 		email: yup
 			.string()
 			.required('メールアドレスは必須です')
@@ -64,9 +63,7 @@
 			.then(async (userCredential) => {
 				const user = userCredential.user;
 				await setDoc(doc(db, 'users', user.uid), {
-					name: values.name,
-					postCount: 0,
-					allowed: false
+					name: values.name
 				});
 				goto('/');
 			})

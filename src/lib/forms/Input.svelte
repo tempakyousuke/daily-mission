@@ -3,7 +3,7 @@
 	export let disabled = false;
 	export let readonly = false;
 	export let placeholder = '';
-	export let value = '';
+	export let value: string | number = '';
 	export let type = 'text';
 	export let label = '';
 	export let className = '';
@@ -27,6 +27,17 @@
 				{disabled}
 				{readonly}
 				{placeholder}
+				on:change={handleChange}
+				on:input={handleInput}
+			/>
+		{/if}
+		{#if type == 'number'}
+			<input
+				bind:value
+				{disabled}
+				{readonly}
+				{placeholder}
+				type="number"
 				on:change={handleChange}
 				on:input={handleInput}
 			/>

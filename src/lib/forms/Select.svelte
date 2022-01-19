@@ -37,6 +37,9 @@
 			return;
 		}
 		await tick();
+		if (!selectEl) {
+			return;
+		}
 		if (selectEl.options[index] === undefined) {
 			return;
 		}
