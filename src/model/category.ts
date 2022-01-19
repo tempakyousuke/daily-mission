@@ -47,15 +47,16 @@ export class CategoryModel {
 	}
 
 	calcLevel(): void {
-		const exp = this.exp;
+		let exp = this.exp;
 		while (exp > 0) {
 			const newExp = exp - this.nextExp;
-			if (newExp > 0) {
-				this.nowExp = newExp;
+			exp = newExp;
+			if (newExp >= 0) {
 				this.nextExp = this.nextExp + 200;
 				this.level++;
 			}
 		}
+		this.nowExp = exp;
 	}
 }
 

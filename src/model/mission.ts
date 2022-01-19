@@ -109,7 +109,7 @@ export class MissionModel {
 		const category = d.data();
 		const nowExp = category.exp ?? 0;
 		const newExp = nowExp + exp;
-		await updateDoc(ref, { exp: newExp });
+		updateDoc(ref, { exp: newExp });
 	}
 }
 
