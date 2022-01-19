@@ -7,12 +7,19 @@
 	import { db } from '$modules/firebase/firebase';
 	import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 	import { createEventDispatcher } from 'svelte';
+	import { user } from '$modules/store/store';
 
 	const dispatch = createEventDispatcher();
+	let uid;
+
+	user.subscribe((user) => {
+		uid = user.uid;
+	});
 
 	const createTag = async () => {
 		await addDoc(collection(db, 'categories'), {
 			name,
+			uid,
 			created: serverTimestamp(),
 			modified: serverTimestamp()
 		});
