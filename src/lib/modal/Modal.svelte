@@ -19,14 +19,18 @@
 		}
 	};
 	$: {
-		if (open) {
-			document.addEventListener('keydown', escClicked);
-		} else {
-			document.removeEventListener('keydown', escClicked);
+		if (typeof document !== 'undefined') {
+			if (open) {
+				document.addEventListener('keydown', escClicked);
+			} else {
+				document.removeEventListener('keydown', escClicked);
+			}
 		}
 	}
 	onDestroy(() => {
-		document.removeEventListener('keydown', escClicked);
+		if (typeof document !== 'undefined') {
+			document.removeEventListener('keydown', escClicked);
+		}
 	});
 	const dispatch = createEventDispatcher();
 </script>
