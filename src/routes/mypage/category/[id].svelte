@@ -39,7 +39,8 @@
 </script>
 
 <div class="container mx-auto mt-20">
-	<div>
+	<div><a href="/mypage">マイページトップ</a></div>
+	<div class="mt-5">
 		{category.name}<br />
 		Lv{category.level}<br />
 		{category.nowExp}/{category.nextExp}exp
