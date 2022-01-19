@@ -1,8 +1,7 @@
 <script lang="ts">
-	import * as yup from 'yup';
 	import { user } from '$modules/store/store';
 	import { db } from '$modules/firebase/firebase';
-	import { addDoc, collection } from 'firebase/firestore';
+	import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 	import { goto } from '$app/navigation';
 	import MissionForm from '$lib/mission/Form.svelte';
 
@@ -13,7 +12,7 @@
 	});
 
 	const addMission = async (values) => {
-		await addDoc(collection(db, 'missions'), values);
+		await addDoc(collection(db, 'missions'), { ...values, created: serverTimestamp(), uid });
 		goto('/mypage');
 	};
 </script>

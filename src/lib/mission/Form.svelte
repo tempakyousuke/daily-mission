@@ -4,7 +4,6 @@
 	import Textarea from '$lib/forms/Textarea.svelte';
 	import Select from '$lib/forms/Select.svelte';
 	import Button from '$lib/button/Button.svelte';
-	import { user } from '$modules/store/store';
 	import { createEventDispatcher } from 'svelte';
 	import CategoryModal from '$lib/category/CategoryModal.svelte';
 	import { collection, getDocs } from 'firebase/firestore';
@@ -15,7 +14,6 @@
 
 	let openCategory = false;
 
-	let uid: string;
 	let categoryOptions = [];
 
 	let values = {
@@ -33,13 +31,8 @@
 
 	let errors = {
 		title: '',
-		detail: '',
-		exp: ''
+		detail: ''
 	};
-
-	user.subscribe((user) => {
-		uid = user.uid;
-	});
 
 	const typeOptions = [
 		{ label: 'デイリー', value: 'dayly' },
