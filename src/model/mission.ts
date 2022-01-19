@@ -83,6 +83,34 @@ export class MissionModel {
 			modified: serverTimestamp()
 		});
 	}
+
+	get nextStep(): Step | undefined {
+		return this.steps.find((step) => {
+			return step.quantity > this.progress;
+		});
+	}
+
+	async increaseProgress(): Promise<void> {
+		if (!this.nextStep) {
+			return;
+		}
+		const step = this.nextStep;
+		const quantity = step.quantity;
+		this.progress = this.progress + 1;
+		if (quantity === this.progress) {
+			await this.addExp(step.exp);
+			this.update({ progress: this.progress });
+		}
+	}
+
+	async addExp(exp: number): Promise<void> {
+		const ref = doc(db, 'categories', this.category);
+		const d = await getDoc(ref);
+		const category = d.data();
+		const nowExp = category.exp ?? 0;
+		const newExp = nowExp + exp;
+		await updateDoc(ref, { exp: newExp });
+	}
 }
 
 export const MissionModelFactory = {
