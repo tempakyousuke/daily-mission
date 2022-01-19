@@ -11,8 +11,8 @@
 		uid = user.uid;
 	});
 
-	const addMission = async (values) => {
-		await addDoc(collection(db, 'missions'), { ...values, created: serverTimestamp(), uid });
+	const addMission = async (event) => {
+		await addDoc(collection(db, 'missions'), { ...event.detail, created: serverTimestamp(), uid });
 		goto('/mypage');
 	};
 </script>
