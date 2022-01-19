@@ -14,24 +14,27 @@
 	import { MissionModelFactory } from '$model/mission';
 	import type { MissionModel } from '$model/mission';
 	import { user } from '$modules/store/store';
-	import { doc, getDoc, onSnapshot } from 'firebase/firestore';
+	import { doc, onSnapshot } from 'firebase/firestore';
 	import { db } from '$modules/firebase/firebase';
 	import { onDestroy } from 'svelte';
-	import { CategoryModelFactory } from '$model/category';
-	import type { CategoryModel } from '$model/category';
+	import { CategoryModel } from '$model/category';
 	let missions: MissionModel[] = [];
 
 	export let id;
 	let category = {} as CategoryModel;
 
-	CategoryModelFactory.getDoc(id).then((data) => {
-		category = data;
+	const unsub = onSnapshot(doc(db, 'categories', id), (doc) => {
+		category = new CategoryModel({ id: doc.id, ...doc.data() } as CategoryModel);
 	});
 
 	user.subscribe(async (user) => {
 		if (user.uid) {
 			missions = await MissionModelFactory.getFromUid(user.uid);
 		}
+	});
+
+	onDestroy(() => {
+		unsub();
 	});
 </script>
 
