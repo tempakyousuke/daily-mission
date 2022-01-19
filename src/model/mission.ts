@@ -12,12 +12,17 @@ import {
 	deleteDoc
 } from 'firebase/firestore';
 import type { DocumentReference, DocumentData, Query } from 'firebase/firestore';
+import dayjs from 'dayjs';
+
+const today = dayjs().format('YYYY-MM-DD');
+const weekStart = dayjs()
+	.subtract((dayjs().day() + 1) % 7, 'day')
+	.format();
 
 interface Step {
 	quantity: number;
 	exp: number;
 }
-
 export class MissionModel {
 	id: string;
 	title: string;
@@ -28,6 +33,9 @@ export class MissionModel {
 	category: string;
 	created: Timestamp;
 	modified: Timestamp;
+	lastDay: string;
+	lastWeek: string;
+	progress: number;
 
 	constructor(init: Required<MissionModel>) {
 		this.id = init.id;
@@ -39,6 +47,34 @@ export class MissionModel {
 		this.category = init.category;
 		this.created = init.created;
 		this.modified = init.modified;
+		if (this.type === 'dayly') {
+			if (today !== init.lastDay) {
+				this.progress = 0;
+				this.update({
+					lastDay: today,
+					progress: 0
+				});
+				this.lastDay = today;
+				this.progress = 0;
+			} else {
+				this.lastDay = init.lastDay;
+				this.progress = init.progress;
+			}
+		}
+		if (this.type === 'weekly') {
+			if (weekStart !== init.lastWeek) {
+				this.progress = 0;
+				this.update({
+					lastWeek: weekStart,
+					progress: 0
+				});
+				this.lastDay = today;
+				this.progress = 0;
+			} else {
+				this.lastDay = init.lastDay;
+				this.progress = init.progress;
+			}
+		}
 	}
 
 	async update(data: any): Promise<void> {
