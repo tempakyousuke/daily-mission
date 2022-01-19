@@ -24,6 +24,9 @@ export class CategoryModel {
 	exp: number;
 	created: Timestamp;
 	modified: Timestamp;
+	level = 1;
+	nowExp: number;
+	nextExp = 200;
 
 	constructor(init: Required<CategoryModel>) {
 		this.id = init.id;
@@ -32,6 +35,8 @@ export class CategoryModel {
 		this.exp = init.exp ?? 0;
 		this.created = init.created;
 		this.modified = init.modified;
+		this.nowExp = this.exp;
+		this.calcLevel();
 	}
 
 	async update(data: any): Promise<void> {
@@ -39,6 +44,18 @@ export class CategoryModel {
 			...data,
 			modified: serverTimestamp()
 		});
+	}
+
+	calcLevel(): void {
+		const exp = this.exp;
+		while (exp > 0) {
+			const newExp = exp - this.nextExp;
+			if (newExp > 0) {
+				this.nowExp = newExp;
+				this.nextExp = this.nextExp + 200;
+				this.level++;
+			}
+		}
 	}
 }
 
