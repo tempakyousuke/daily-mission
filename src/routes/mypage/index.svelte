@@ -25,6 +25,6 @@
 <a href="/mypage/mission/add">ミッション追加</a>
 <div class="mt-5">
 	{#each categories as category}
-		<a href="/category/{category.id}">{category.name}</a><br />
+		<a href="/mypage/category/{category.id}">{category.name}</a><br />
 	{/each}
 </div>
