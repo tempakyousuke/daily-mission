@@ -52,11 +52,11 @@ export class CategoryModel {
 			const newExp = exp - this.nextExp;
 			exp = newExp;
 			if (newExp >= 0) {
+				this.nowExp = exp;
 				this.nextExp = this.nextExp + 200;
 				this.level++;
 			}
 		}
-		this.nowExp = exp;
 	}
 }
 
