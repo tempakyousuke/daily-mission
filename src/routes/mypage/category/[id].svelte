@@ -48,6 +48,7 @@
 		{#each missions as mission}
 			<div class="p-5 border rounded-full">
 				<div>{mission.title}</div>
+				{mission.progress}
 				{#if mission.nextStep}
 					{#if mission.steps.length > 1 || mission.nextStep.quantity > 1}
 						{mission.progress}/{mission.nextStep.quantity}
@@ -56,6 +57,7 @@
 						className="mt-2"
 						on:click={() => {
 							mission.increaseProgress();
+							missions = missions;
 						}}>進捗をすすめる</Button
 					>
 				{/if}
