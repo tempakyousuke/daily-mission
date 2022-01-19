@@ -125,9 +125,9 @@
 					className="col-span-1 mt-3"
 					bind:value={step.quantity}
 					type="number"
-					label="繰り返し数"
+					label="必要回数"
 				/>
-				<Input className="col-span-1 mt-3" bind:value={step.exp} type="number" label="ポイント" />
+				<Input className="col-span-1 mt-3" bind:value={step.exp} type="number" label="経験値" />
 			{/each}
 		</div>
 		<div class="w-6/12 mx-auto my-5">
