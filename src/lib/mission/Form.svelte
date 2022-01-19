@@ -6,16 +6,24 @@
 	import Button from '$lib/button/Button.svelte';
 	import { user } from '$modules/store/store';
 	import { createEventDispatcher } from 'svelte';
+	import CategoryModal from '$lib/category/CategoryModal.svelte';
+	import { collection, getDocs } from 'firebase/firestore';
+	import { db } from '$modules/firebase/firebase';
+	import { browser } from '$app/env';
 
 	const dispatch = createEventDispatcher();
 
+	let openCategory = false;
+
 	let uid: string;
+	let categoryOptions = [];
 
 	let values = {
 		title: '',
 		detail: '',
 		point: '',
-		type: 'dayly'
+		type: 'dayly',
+		category: ''
 	};
 
 	let errors = {
@@ -67,6 +75,23 @@
 				});
 			});
 	};
+
+	const getCategories = async () => {
+		if (!browser) {
+			return;
+		}
+		const snapshots = await getDocs(collection(db, 'categories'));
+		const categories = [];
+		snapshots.forEach((doc) => {
+			categories.push({
+				label: doc.data().name,
+				value: doc.id
+			});
+		});
+		categoryOptions = categories;
+	};
+
+	getCategories();
 </script>
 
 <form>
@@ -93,5 +118,14 @@
 		on:input={() => validate('point')}
 	/>
 	<Select bind:value={values.type} options={typeOptions} className="mt-5" />
+	<Select bind:value={values.category} options={categoryOptions} className="mt-5" />
+	<div class="flex mt-5">
+		<Button
+			on:click={() => {
+				openCategory = true;
+			}}>カテゴリー追加</Button
+		>
+	</div>
 	<Button block className="mt-5" on:click={submit}>登録</Button>
 </form>
+<CategoryModal bind:open={openCategory} on:complete={getCategories} />
