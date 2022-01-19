@@ -114,6 +114,10 @@ export class MissionModel {
 }
 
 export const MissionModelFactory = {
+	getFromCategory(categoryId: string): Promise<MissionModel[]> {
+		const q = query(collection(db, 'missions'), where('category', '==', categoryId));
+		return this.getList(q);
+	},
 	getFromUid(uid: string): Promise<MissionModel[]> {
 		const q = query(collection(db, 'missions'), where('uid', '==', uid));
 		return this.getList(q);

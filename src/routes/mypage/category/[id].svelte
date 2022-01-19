@@ -1,5 +1,5 @@
 <script context="module">
-	export async function load({ params }) {
+	export function load({ params }) {
 		const id = params.id;
 		return {
 			props: {
@@ -11,26 +11,23 @@
 
 <script lang="ts">
 	import Button from '$lib/button/Button.svelte';
-	import { MissionModelFactory } from '$model/mission';
+	import { MissionModel, MissionModelFactory } from '$model/mission';
 	import type { MissionModel } from '$model/mission';
-	import { user } from '$modules/store/store';
 	import { doc, onSnapshot } from 'firebase/firestore';
 	import { db } from '$modules/firebase/firebase';
 	import { onDestroy } from 'svelte';
 	import { CategoryModel } from '$model/category';
-	let missions: MissionModel[] = [];
 
 	export let id;
 	let category = {} as CategoryModel;
+	let missions: MissionModel[] = [];
 
 	const unsub = onSnapshot(doc(db, 'categories', id), (doc) => {
 		category = new CategoryModel({ id: doc.id, ...doc.data() } as CategoryModel);
 	});
 
-	user.subscribe(async (user) => {
-		if (user.uid) {
-			missions = await MissionModelFactory.getFromUid(user.uid);
-		}
+	MissionModelFactory.getFromCategory(id).then((arr) => {
+		missions = arr;
 	});
 
 	onDestroy(() => {
