@@ -1,17 +1,30 @@
 <script lang="ts">
-	import { MissionModelFactory } from '$model/mission';
-	import type { MissionModel } from '$model/mission';
 	import { user } from '$modules/store/store';
-	let missions: MissionModel[] = [];
+	import { getDocs } from 'firebase/firestore';
+	import { query, collection, where } from 'firebase/firestore';
+	import { db } from '$modules/firebase/firebase';
+
+	let categories = [];
 
 	user.subscribe(async (user) => {
 		if (user.uid) {
-			missions = await MissionModelFactory.getFromUid(user.uid);
+			const q = query(collection(db, 'categories'), where('uid', '==', user.uid));
+			const snapshot = await getDocs(q);
+			const arr = [];
+			snapshot.forEach((doc) => {
+				arr.push({
+					id: doc.id,
+					...doc.data()
+				});
+			});
+			categories = arr;
 		}
 	});
 </script>
 
 <a href="/mypage/mission/add">ミッション追加</a>
-{#each missions as mission}
-	{mission.title}
-{/each}
+<div class="mt-5">
+	{#each categories as category}
+		<a href="/category/{category.id}">{category.name}</a><br />
+	{/each}
+</div>
