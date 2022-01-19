@@ -21,7 +21,12 @@
 	let values = {
 		title: '',
 		detail: '',
-		point: '',
+		steps: [
+			{
+				quantity: 1,
+				exp: 0
+			}
+		],
 		type: 'dayly',
 		category: ''
 	};
@@ -29,7 +34,7 @@
 	let errors = {
 		title: '',
 		detail: '',
-		point: ''
+		exp: ''
 	};
 
 	user.subscribe((user) => {
@@ -43,13 +48,7 @@
 
 	const schema = yup.object().shape({
 		title: yup.string().required('ミッション名は必須です'),
-		detail: yup.string(),
-		point: yup
-			.number()
-			.nullable()
-			.required('経験値は必須です')
-			.positive('正の値を入力してください')
-			.integer('整数値を入力してください')
+		detail: yup.string()
 	});
 
 	const validate = (path: string) => {
@@ -92,6 +91,16 @@
 	};
 
 	getCategories();
+
+	const addStep = () => {
+		values.steps = [
+			...values.steps,
+			{
+				quantity: 0,
+				exp: 0
+			}
+		];
+	};
 </script>
 
 <form>
@@ -109,14 +118,23 @@
 		error={errors.detail}
 		on:input={() => validate('detail')}
 	/>
-	<Input
-		bind:value={values.point}
-		type="number"
-		label="ポイント"
-		className="mt-6"
-		error={errors.point}
-		on:input={() => validate('point')}
-	/>
+	<div class="border">
+		<div class="grid grid-cols-2 px-2">
+			{#each values.steps as step}
+				<Input
+					className="col-span-1 mt-3"
+					bind:value={step.quantity}
+					type="number"
+					label="繰り返し数"
+				/>
+				<Input className="col-span-1 mt-3" bind:value={step.exp} type="number" label="ポイント" />
+			{/each}
+		</div>
+		<div class="w-6/12 mx-auto my-5">
+			<Button block on:click={addStep}>段階を追加</Button>
+		</div>
+	</div>
+
 	<Select bind:value={values.type} options={typeOptions} className="mt-5" />
 	<Select bind:value={values.category} options={categoryOptions} className="mt-5" />
 	<div class="flex mt-5">
