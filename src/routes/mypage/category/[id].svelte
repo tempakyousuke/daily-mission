@@ -11,7 +11,7 @@
 
 <script lang="ts">
 	import Button from '$lib/button/Button.svelte';
-	import { MissionModel, MissionModelFactory } from '$model/mission';
+	import { MissionModelFactory } from '$model/mission';
 	import type { MissionModel } from '$model/mission';
 	import { doc, onSnapshot } from 'firebase/firestore';
 	import { db } from '$modules/firebase/firebase';
