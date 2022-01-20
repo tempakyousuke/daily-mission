@@ -99,8 +99,8 @@ export class MissionModel {
 		this.progress = this.progress + 1;
 		if (quantity === this.progress) {
 			await this.addExp(step.exp);
-			this.update({ progress: this.progress });
 		}
+		this.update({ progress: this.progress });
 	}
 
 	async addExp(exp: number): Promise<void> {
